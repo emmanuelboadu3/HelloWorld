@@ -8,7 +8,7 @@ This is a simple Hello World example project created as part of the W01 activity
 The purpose of this project is to verify that my development environment is properly set up and that I can create, run, and submit software using GitHub.
 
 ## Software Demo Video
-[Software Demo Video](https://youtube.com/your-actual-video-link)
+[Software Demo Video](https://youtu.be/JPjRBSDsoMA)
 
 ## Development Environment
 - Python 3
