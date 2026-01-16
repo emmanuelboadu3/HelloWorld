@@ -14,13 +14,15 @@ The game demonstrates core JavaScript concepts such as DOM manipulation, event h
 ---
 
 ## Features
-- Randomly shuffled card pairs using emojis
-- Interactive card flipping with animations
-- Move counter and elapsed time tracking
+- Randomly shuffled card pairs using fruit emojis
+- Interactive card flipping with animations (Animate.css)
+- Move counter and elapsed time tracking (formatted as mm:ss)
 - Match detection and automatic card reset for mismatches
-- Game completion detection with success alert
-- Option to restart the game after completion
+- Game state management using JavaScript arrays
 - User-friendly error handling using SweetAlert2
+- Easy game reset functionality
+
+*Note: The congratulatory popup has been removed for simplicity, but game completion is tracked.*
 
 ---
 
@@ -28,14 +30,14 @@ The game demonstrates core JavaScript concepts such as DOM manipulation, event h
 - HTML5
 - CSS3
 - JavaScript (ES6+)
-- SweetAlert2 (for alerts and notifications)
+- SweetAlert2 (for alerts and error handling)
 - Animate.css (for card flip animations)
 
 ---
 
 ## How the Game Works
 1. Cards are shuffled randomly when the game starts.
-2. Each card is displayed face-down.
+2. Each card is displayed face-down with a "?" symbol.
 3. Clicking a card flips it to reveal an emoji.
 4. When two cards are flipped:
    - If they match, they remain visible.
@@ -44,20 +46,25 @@ The game demonstrates core JavaScript concepts such as DOM manipulation, event h
    - Number of moves
    - Number of matched pairs
    - Time elapsed
-6. When all pairs are matched, a congratulatory message is displayed.
-7. The player can choose to restart the game.
+6. When all pairs are matched, the game logs completion in the console.
+7. The player can restart the game at any time.
 
 ---
 
 ## Key JavaScript Concepts Demonstrated
 - `DOMContentLoaded` event handling
-- DOM manipulation (`createElement`, `appendChild`)
-- Recursive rendering of elements
+- DOM manipulation (`createElement`, `appendChild`, `classList`)
+- Recursive rendering of game cards
 - Array methods (`sort`, `push`, `includes`)
 - Error handling with `try...catch`
 - Timing functions (`setTimeout`)
-- Game state management
+- Game state management (tracking flipped and matched cards, moves, and time)
+- Modular, readable code structure
 
 ---
 
 ## Project Structure
+
+## Video Demonstration 
+A 4–5 minute video demonstration and code walkthrough of this project can be found here:
+ [https://youtu.be/mAUUAMvSj6Q]

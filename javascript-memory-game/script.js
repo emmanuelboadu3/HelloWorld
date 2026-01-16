@@ -1,14 +1,22 @@
 // ==========================
-// JavaScript Memory Game
+// Memory Game Module Submission
+// Course: CSE 310
 // Author: Emmanuel Boadu
+// This file contains the full implementation of the Memory Game.
+// It demonstrates recursion, ES6 array methods, exception handling,
+// and external libraries (SweetAlert2, Animate.css).
 // ==========================
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Get references to the game board and stats display
+    // ==========================
+    // DOM references
+    // ==========================
     const board = document.getElementById("game-board");
     const stats = document.getElementById("stats");
 
-    // Define card symbols (pairs of emojis)
+    // ==========================
+    // Card setup: 8 pairs of fruit emojis
+    // ==========================
     let cards = [
         "🍎", "🍌", "🍇", "🍒",
         "🍎", "🍌", "🍇", "🍒",
@@ -19,29 +27,37 @@ document.addEventListener("DOMContentLoaded", () => {
     // Shuffle cards randomly using ES6 array method
     cards = cards.sort(() => Math.random() - 0.5);
 
-    // Track flipped cards, matched pairs, moves, and start time
-    let flipped = [];
-    let matched = [];
-    let moves = 0;
-    let startTime = Date.now();
+    // ==========================
+    // Game state variables
+    // ==========================
+    let flipped = [];   // currently flipped cards
+    let matched = [];   // stores one symbol per matched pair
+    let moves = 0;      // number of flips
+    let startTime = Date.now(); // track start time
+
+    // ==========================
+    // Helper: Format elapsed time into mm:ss
+    // ==========================
+    function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins}m ${secs}s`;
+    }
 
     // ==========================
     // Recursively render all cards on the board
     // ==========================
     function renderCards(index = 0) {
-        if (index === cards.length) return; // Base case: stop when all cards are rendered
+        if (index === cards.length) return; // Base case
 
-        // Create a card element
         const card = document.createElement("div");
         card.className = "card";
-        card.textContent = "?"; // Initially hidden
-        card.onclick = () => flipCard(card, cards[index]); // Add click event to flip card
+        card.textContent = "?"; // Hidden initially
+        card.onclick = () => flipCard(card, cards[index]); // Flip on click
 
-        // Add card to the board
         board.appendChild(card);
 
-        // Recursive call to render the next card
-        renderCards(index + 1);
+        renderCards(index + 1); // Recursive call
     }
 
     // ==========================
@@ -49,23 +65,19 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================
     function flipCard(card, symbol) {
         try {
-            // Prevent flipping the same card twice
             if (flipped.includes(card)) throw new Error("Card already flipped!");
 
-            // Reveal the symbol and add animation
             card.textContent = symbol;
             card.classList.add("flipped", "animate__animated", "animate__flipInY");
 
-            // Track flipped card
             flipped.push(card);
             moves++; // Count each flip
 
-            // If two cards are flipped, check for a match
             if (flipped.length === 2) {
                 checkMatch();
             }
         } catch (error) {
-            // Show error using SweetAlert2
+            // SweetAlert2 used for error handling
             Swal.fire("Error", error.message, "error");
         }
     }
@@ -74,13 +86,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // Check if two flipped cards match
     // ==========================
     function checkMatch() {
-        const [card1, card2] = flipped; // Get the two flipped cards
+        const [card1, card2] = flipped;
 
         if (card1.textContent === card2.textContent) {
-            // If they match, add both cards to matched array
-            matched.push(card1, card2);
+            // Push one symbol per pair
+            matched.push(card1.textContent);
         } else {
-            // If not, flip them back after a short delay
+            // Flip back if not matched
             setTimeout(() => {
                 card1.textContent = "?";
                 card2.textContent = "?";
@@ -89,55 +101,33 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 1000);
         }
 
-        // Reset flipped array for next turn
         flipped = [];
-
-        // Update stats after each attempt
         updateStats();
     }
 
     // ==========================
-    // Update stats and check for game completion
+    // Update stats (pairs matched, moves, time)
     // ==========================
     function updateStats() {
-        // Calculate elapsed time in seconds
         const elapsed = Math.floor((Date.now() - startTime) / 1000);
 
-        // Show stats: matched pairs, moves, and time
-        stats.textContent = `Matched: ${matched.length / 2} / ${cards.length / 2} | Moves: ${moves} | Time: ${elapsed}s`;
+        stats.textContent = `Matched: ${matched.length} / ${cards.length / 2} | Moves: ${moves} | Time: ${formatTime(elapsed)}`;
 
-        // If all pairs are matched, show success message with celebration image
-        if (matched.length === cards.length) {
-            Swal.fire({
-                title: "Congratulations!",
-                text: `You matched all the cards in ${moves} moves and ${elapsed} seconds!`,
-                icon: "success", // built-in success icon
-                imageUrl: "https://cdn-icons-png.flaticon.com/512/190/190411.png", // trophy image
-                imageWidth: 100,
-                imageHeight: 100,
-                imageAlt: "Celebration image",
-                confirmButtonText: "Play Again"
-            }).then((result) => {
-                if (result.isConfirmed) resetGame(); // restart game if confirmed
-            });
-        }
+        
     }
 
     // ==========================
     // Reset the game
     // ==========================
     function resetGame() {
-        // Clear the board and reset variables
         board.innerHTML = "";
         matched = [];
         flipped = [];
         moves = 0;
         startTime = Date.now();
 
-        // Shuffle cards again
         cards = cards.sort(() => Math.random() - 0.5);
 
-        // Render cards and reset stats
         renderCards();
         updateStats();
     }
@@ -148,3 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderCards();
     updateStats();
 });
+
+// ==========================
+// End of Memory Game Code
+// ==========================
